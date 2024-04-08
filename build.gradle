@@ -2,23 +2,28 @@ buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
     }
 }
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 plugins {
     id 'eclipse'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.1.0' // Use a versão mais recente do plugin Shadow
+
 }
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 
 version = '1.0.1.18.2'
-group = 'net.loosaz.luzamod' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'luzamod'
+group = 'net.duperz.ttranslator' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'ttranslator'
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -38,7 +43,7 @@ minecraft {
     //
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'official', version: '1.18.2'
+    mappings channel: 'parchment', version: '2022.11.06-1.18.2'
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -61,10 +66,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'luzamod'
+            property 'forge.enabledGameTestNamespaces', 'ttranslator'
 
             mods {
-                luzamod {
+                ttranslator {
                     source sourceSets.main
                 }
             }
@@ -78,10 +83,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'luzamod'
+            property 'forge.enabledGameTestNamespaces', 'ttranslator'
 
             mods {
-                luzamod {
+                ttranslator {
                     source sourceSets.main
                 }
             }
@@ -106,10 +111,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'luzamod'
+            property 'forge.enabledGameTestNamespaces', 'ttranslator'
 
             mods {
-                luzamod {
+                ttranslator {
                     source sourceSets.main
                 }
             }
@@ -123,10 +128,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'luzamod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'ttranslator', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                luzamod {
+                ttranslator {
                     source sourceSets.main
                 }
             }
@@ -166,16 +171,22 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
+shadowJar {
+    dependencies {
+        include(dependency('com.google.code.gson:gson:2.7'))
+    }
+}
+
 // Example for how to get properties into the manifest for reading at runtime.
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "luzamod",
-                "Specification-Vendor"    : "luzamodsareus",
+                "Specification-Title"     : "ttranslator",
+                "Specification-Vendor"    : "ttranslatorsareus",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "luzamodsareus",
+                "Implementation-Vendor"   : "ttranslatorsareus",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
