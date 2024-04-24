@@ -1,8 +1,8 @@
 package net.duperez.ttranslator;
 
 import com.mojang.logging.LogUtils;
-import net.duperez.ttranslator.events.client.Keybinds;
-import net.duperez.ttranslator.network.ModNetworking;
+import net.duperez.ttranslator.client.events.Keybinds;
+import net.duperez.ttranslator.common.network.ModNetworking;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -43,7 +43,7 @@ public class Ttranslator {
     private void setup(final FMLCommonSetupEvent event) {
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
-        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+        //LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
         ModNetworking.setupNetwork();
     }
 }
