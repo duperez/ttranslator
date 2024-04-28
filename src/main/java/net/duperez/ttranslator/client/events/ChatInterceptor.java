@@ -11,17 +11,6 @@ public class ChatInterceptor {
 
     @SubscribeEvent
     public static void onChatReceived(ClientChatReceivedEvent event) {
-        String message = event.getMessage().getString();
-        
-        // Verifique se a mensagem atende a algum critério para ser cancelada
-        if (!ClientSideUiConfigsService.getInstance().getConfigs().isShowOriginalMessage()) {
-            event.setCanceled(true); // Cancela a mensagem, impedindo que ela apareça no chat
-        }
-    }
-    
-    private static boolean deveCancelarMensagem(String mensagem) {
-        // Adicione sua lógica aqui para determinar se a mensagem deve ser cancelada
-        // Exemplo: cancelar mensagens que contêm uma palavra específica
-        return mensagem.contains("palavraProibida");
+        event.setCanceled(!ClientSideUiConfigsService.getInstance().getConfigs().isShowOriginalMessage()); // Cancela a mensagem, impedindo que ela apareça no chat
     }
 }

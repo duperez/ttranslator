@@ -3,7 +3,7 @@ package net.duperez.ttranslator.client.entities;
 public class ClientTranslationUiConfigEntity {
 
     boolean showTranslations = true;
-    boolean showOriginalMessage = true;
+    boolean showOriginalMessage = false;
     boolean showOwnTranslations = true;
     boolean showOriginalLanguage = true;
     boolean showTranslatedLanguage = true;

@@ -118,43 +118,4 @@ public class TranslationService {
         }
     }
 
-
-    /*
-    public static String getTranslation(String textoOriginal, String l1, String l2, String key) throws IOException {
-        String result = "";
-        System.out.println("Entrada: " + textoOriginal);
-        System.out.println("L1: " + l1);
-        System.out.println("L2: " + l2);
-        String encodedText = URLEncoder.encode(textoOriginal, "UTF-8");
-        String requestUrl = "https://translation.googleapis.com/language/translate/v2"
-                + "?key=" + key
-                + "&q=" + encodedText
-                + "&source=" + l1
-                + "&target=" + l2;
-
-        URL url = new URL(requestUrl);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-
-        int responseCode = connection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            String jsonResponse = response.toString();
-            result = getValue(jsonResponse);
-        } else {
-            System.out.println("Erro na requisição: " + responseCode);
-        }
-        connection.disconnect();
-        return StringEscapeUtils.unescapeHtml4(result);
-    }
-     */
-
 }

@@ -13,8 +13,18 @@ public class ClientSideClientConfigs implements ClientConfigsInterface {
 
     Language spokenLanguage;
 
+    boolean isOp;
+
     public ClientSideClientConfigs() {
 
+    }
+
+    public boolean isOp() {
+        return isOp;
+    }
+
+    public void setOp(boolean op) {
+        isOp = op;
     }
 
     public String getName() {

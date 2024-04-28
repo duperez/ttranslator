@@ -1,27 +1,27 @@
 package net.duperez.ttranslator.client.gui.serverUI;
 
 import com.google.gson.Gson;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.duperez.ttranslator.client.gui.MainScreen;
+import net.duperez.ttranslator.client.gui.baseScreens.BaseTTranslatorPaginatedScreen;
 import net.duperez.ttranslator.client.services.ClientSideClientModService;
 import net.duperez.ttranslator.common.messages.LanguagePacket;
 import net.duperez.ttranslator.common.network.ModNetworking;
 import net.duperez.ttranslator.objects.common.Language;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerLanguagesScreen extends Screen {
-
-    private int currentPage = 1;
+public class ServerLanguagesScreen extends BaseTTranslatorPaginatedScreen {
 
     List<Language> languages;
 
-    private int totalPages;
+    EditBox languageNameInput;
+    EditBox languageIsoNameInput;
+    Button addButton;
 
     public ServerLanguagesScreen(Component pTitle) {
         super(pTitle);
@@ -30,23 +30,23 @@ public class ServerLanguagesScreen extends Screen {
     @Override
     public void init() {
         super.init();
-        totalPages = (int) Math.ceil((double) ClientSideClientModService.getInstance().getClientEntity().getLanguages().size() / 4);
         renderMenu();
     }
 
-    private void renderMenu() {
+    protected void renderMenu() {
         this.clearWidgets();
         int width = this.width / 2 - 100;
         int height = this.height / 4 - 10;
 
         int startIndex = (currentPage - 1) * 4;
 
-        languages = new ArrayList<>(ClientSideClientModService
-                .getInstance()
-                .getClientEntity()
-                .getLanguages());
+        //addBackButton();
+        super.addDefaultBackButton(new MainScreen(new TextComponent("Main menu")));
 
-        totalPages = (int) Math.ceil((double) languages.size() / 4);
+
+        languages = new ArrayList<>(ClientSideClientModService.getInstance().getClientEntity().getLanguages());
+
+        totalPages = getTotalPages();
 
         int endIndex = Math.min(startIndex + 4, languages.size());
 
@@ -65,7 +65,7 @@ public class ServerLanguagesScreen extends Screen {
                 String languageJson = new Gson().toJson(ClientSideClientModService.getInstance().getClientEntity().getLanguages());
                 LanguagePacket translationKeyPackage = new LanguagePacket(languageJson);
                 ModNetworking.CHANNEL.sendToServer(translationKeyPackage);
-
+                renderMenu();
             });
 
             this.addRenderableWidget(deleteButton);
@@ -79,18 +79,24 @@ public class ServerLanguagesScreen extends Screen {
 
 
         //controller
-        addController(width, height);
+        addDefaultPaginationController();
     }
 
     private void addLanguageInput(int width, int height) {
         EditBox languageNameInput = new EditBox(this.font, width, height + 50, 100, 20, new TextComponent("Language Name"));
         EditBox languageISOInput = new EditBox(this.font, width + 100, height + 50, 50, 20, new TextComponent("ISO"));
+        languageNameInput.setSuggestion("English");
+        languageISOInput.setSuggestion("EN");
+        this.languageNameInput = languageNameInput;
+        this.languageIsoNameInput = languageISOInput;
         this.addRenderableWidget(languageNameInput);
         this.addRenderableWidget(languageISOInput);
+        this.languageNameInput.setResponder(i -> onTextChanged(languageNameInput, i, "English"));
+        this.languageIsoNameInput.setResponder(i -> onTextChanged(languageIsoNameInput, i, "EN"));
 
 
         Button addButton = new Button(width + 150, height + 50, 20, 20, new TextComponent("+"), (Button button) -> {
-            Language newLanguage = new Language(languageNameInput.getValue(), languageISOInput.getValue());
+            Language newLanguage = new Language(languageNameInput.getValue().toLowerCase(), languageISOInput.getValue().toLowerCase());
             ClientSideClientModService.getInstance().getClientEntity().getLanguages().add(newLanguage);
             String languageJson = new Gson().toJson(ClientSideClientModService.getInstance().getClientEntity().getLanguages());
             LanguagePacket languagePacket = new LanguagePacket(languageJson);
@@ -98,39 +104,15 @@ public class ServerLanguagesScreen extends Screen {
             renderMenu();
         });
         this.addRenderableWidget(addButton);
+        this.addButton = addButton;
+        this.addButton.active = false;
     }
 
-    private void addController(int width, int height) {
-        Button backButton = new Button(width + 100, height + 80, 20, 20, new TextComponent("<"), (Button button) -> {
-            if (currentPage > 1) {
-                currentPage--;
-                renderMenu();
-            }
-        });
-        this.addRenderableWidget(backButton);
+    private void onTextChanged(EditBox edt, String text, String suggestionText) {
+        // Se o campo de texto está vazio, mostra o texto de sugestão.
+        edt.setSuggestion(text.isEmpty() ? suggestionText : "");
 
-        Button currentPageButton = new Button((width + 100) + 25, height + 80, 20, 20, new TextComponent(currentPage + "/" + totalPages), (Button button) -> {
-        });
-        this.addRenderableWidget(currentPageButton);
-
-        Button forwardButton = new Button((width + 100) + 50, height + 80, 20, 20, new TextComponent(">"), (Button button) -> {
-            if (totalPages > currentPage) {
-                currentPage++;
-                renderMenu();
-            }
-        });
-        this.addRenderableWidget(forwardButton);
-    }
-
-    @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        this.renderBackground(pPoseStack);
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-    }
-
-    @Override
-    public boolean isPauseScreen() {
-        return false;
+        this.addButton.active  = (!this.languageNameInput.getValue().isEmpty() && !this.languageIsoNameInput.getValue().isEmpty());
     }
 
 }

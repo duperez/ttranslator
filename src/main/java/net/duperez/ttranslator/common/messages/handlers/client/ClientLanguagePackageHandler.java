@@ -14,6 +14,8 @@ import net.minecraft.network.chat.TextComponent;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static net.duperez.ttranslator.client.events.ClientDataSaver.loadUserData;
+
 public class ClientLanguagePackageHandler {
 
     public static void playerProcessMessage(String message) {
@@ -21,17 +23,18 @@ public class ClientLanguagePackageHandler {
 
 
         //TODO: REMOVE
-        Minecraft.getInstance().player.displayClientMessage(new TextComponent(message), false);
+        //Minecraft.getInstance().player.displayClientMessage(new TextComponent(message), false);
         Type languageListType = new TypeToken<List<Language>>() {
         }.getType();
         List<Language> languageList = gson.fromJson(message, languageListType);
 
-        Minecraft.getInstance().player.displayClientMessage(new TextComponent(message), false);
+        //Minecraft.getInstance().player.displayClientMessage(new TextComponent(message), false);
 
         ClientTranslationConfigsEntity configs = ClientSideClientModService.getInstance().getClientEntity();
         configs.getLanguages().clear();
         languageList.forEach(configs::addLanguage);
-        configs.getLanguages().forEach(language -> Minecraft.getInstance().player.displayClientMessage(new TextComponent(language.getIsoName()), false));
+        //configs.getLanguages().forEach(language -> Minecraft.getInstance().player.displayClientMessage(new TextComponent(language.getIsoName()), false));
+        loadUserData();
         if(ClientSideClientLanguageService.getInstance().getClientEntity() == null) {
             ClientSideClientConfigs clientSideClientConfigs = new ClientSideClientConfigs();
             clientSideClientConfigs.setName(Minecraft.getInstance().player.getName().getString());

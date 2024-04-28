@@ -1,9 +1,6 @@
 package net.duperez.ttranslator.common.network;
 
-import net.duperez.ttranslator.common.messages.LanguagePacket;
-import net.duperez.ttranslator.common.messages.MessagePackage;
-import net.duperez.ttranslator.common.messages.TranslationKeyPackage;
-import net.duperez.ttranslator.common.messages.UserPackage;
+import net.duperez.ttranslator.common.messages.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
@@ -54,5 +51,10 @@ public class ModNetworking {
                 TranslationKeyPackage::encode,
                 TranslationKeyPackage::decode,
                 TranslationKeyPackage::handle);
+
+        registerPacket(OpPackage.class,
+                OpPackage::encode,
+                OpPackage::decode,
+                OpPackage::handle);
     }
 }

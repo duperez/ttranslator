@@ -30,7 +30,7 @@ public class ClientDataSaver {
         }
     }
 
-    private static void loadUserData() {
+    public static void loadUserData() {
         try (FileReader reader = new FileReader(PATH)) {
 
             ClientSideClientConfigs user = gson.fromJson(reader, ClientSideClientConfigs.class);

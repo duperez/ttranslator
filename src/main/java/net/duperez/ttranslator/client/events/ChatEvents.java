@@ -15,7 +15,6 @@ public class ChatEvents {
 
     @SubscribeEvent
     public static void onPlayerChat(ClientChatEvent event) {
-        System.out.println("player sent a message in the chat");
         System.out.println(event.getMessage());
 
         String playerName = Minecraft.getInstance().player.getName().getString();

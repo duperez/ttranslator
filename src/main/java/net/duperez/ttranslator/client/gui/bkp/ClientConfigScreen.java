@@ -1,19 +1,20 @@
 package net.duperez.ttranslator.client.gui.bkp;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.duperez.ttranslator.client.entities.ClientTranslationUiConfigEntity;
+import net.duperez.ttranslator.client.gui.MainScreen;
+import net.duperez.ttranslator.client.gui.baseScreens.BaseTTranslatorScreen;
 import net.duperez.ttranslator.client.services.ClientSideUiConfigsService;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static net.duperez.ttranslator.client.gui.UiCommons.BUTTON_SELECTED_COLOR;
-import static net.duperez.ttranslator.client.gui.UiCommons.BUTTON_DEFAULT_COLOR;
 
-public class ClientConfigScreen extends Screen {
+public class ClientConfigScreen extends BaseTTranslatorScreen {
     private static final int BUTTON_WIDTH = 200;
     private static final int BUTTON_HEIGHT = 20;
     private static final int HEIGHT_INCREMENT = 24;
@@ -29,6 +30,10 @@ public class ClientConfigScreen extends Screen {
         super.init();
         int displayWidth = this.width / 2 - 100;
         int displayHeight = this.height / 4 - 10;
+
+        super.addDefaultBackButton(new MainScreen(new TextComponent("Main menu")));
+
+
 
         ClientTranslationUiConfigEntity clientConfig = ClientSideUiConfigsService.getInstance().getConfigs();
 
