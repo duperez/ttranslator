@@ -1,15 +1,16 @@
 package net.duperez.ttranslator.client.gui.bkp;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.duperez.ttranslator.client.gui.MainScreen;
+import net.duperez.ttranslator.client.gui.baseScreens.BaseTTranslatorScreen;
 import net.duperez.ttranslator.common.messages.TranslationKeyPackage;
 import net.duperez.ttranslator.common.network.ModNetworking;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 
-public class ServerKeyTranslationScreen extends Screen {
+public class ServerKeyTranslationScreen extends BaseTTranslatorScreen {
 
     public ServerKeyTranslationScreen(Component pTitle) {
         super(pTitle);
@@ -18,34 +19,21 @@ public class ServerKeyTranslationScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        int width = this.width / 2 - 100; // Centraliza os botões na tela
+        int width = this.width / 2 - 100;
         int height = this.height / 4 - 10;
 
-        // Adicionando o EditBox
+        //addBackButton();
+        super.addDefaultBackButton(new MainScreen(new TextComponent("Main menu")));
+
         EditBox textField = new EditBox(this.font, width, height, 200, 20, new TextComponent("Text Field"));
-        textField.setMaxLength(40); // Define o máximo de caracteres permitidos
-        textField.setValue(""); // Valor inicial do campo de texto
-        addRenderableWidget(textField); // Adiciona o campo de texto para que ele seja renderizado e atualizado
+        textField.setMaxLength(40);
+        textField.setValue("");
+        addRenderableWidget(textField);
 
-
-        // Botão para "Spoken Language"
         this.addRenderableWidget(new Button(width, height + 30, 200, 20, new TextComponent("save translation key"), button -> {
             TranslationKeyPackage translationKeyPackage = new TranslationKeyPackage(textField.getValue());
             ModNetworking.CHANNEL.sendToServer(translationKeyPackage);
         }));
 
     }
-
-    @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        this.renderBackground(pPoseStack); // Isso vai desenhar o fundo escuro padrão
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-        // Aqui você pode adicionar o que mais quiser renderizar
-    }
-
-    @Override
-    public boolean isPauseScreen() {
-        return false; // Retorna true se essa tela não deve pausar o jogo no modo singleplayer
-    }
-
 }

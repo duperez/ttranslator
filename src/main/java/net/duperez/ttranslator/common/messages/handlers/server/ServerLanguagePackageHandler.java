@@ -18,13 +18,11 @@ public class ServerLanguagePackageHandler {
         Type languageListType = new TypeToken<List<Language>>() {
         }.getType();
         List<Language> languageList = gson.fromJson(message, languageListType);
-        System.out.println("received message" + message);
         ServerSideConfigsService.getInstance().getConfigs().setLanguages(languageList);
         languageList.forEach(l -> ServerSideConfigsService.getInstance().getConfigs().addLanguage(l));
         String languageJson = gson.toJson(ServerSideConfigsService.getInstance().getConfigs().getLanguages());
         LanguagePacket packet = new LanguagePacket(languageJson);
 
-        System.out.println("sending message" + languageJson);
         ModNetworking.CHANNEL.send(PacketDistributor.ALL.noArg(), packet);
 
     }

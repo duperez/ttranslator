@@ -2,6 +2,7 @@ package net.duperez.ttranslator.server.events;
 
 import com.google.gson.Gson;
 import net.duperez.ttranslator.common.messages.LanguagePacket;
+import net.duperez.ttranslator.common.messages.OpPackage;
 import net.duperez.ttranslator.common.network.ModNetworking;
 import net.duperez.ttranslator.server.entities.ServerTranslationConfigsEntity;
 import net.duperez.ttranslator.server.services.ServerSideClientService;
@@ -29,6 +30,10 @@ public class ServerEvents {
         LanguagePacket packet = new LanguagePacket(languageJson);
 
         ModNetworking.CHANNEL.sendTo(packet, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+
+        System.out.println("player is OP?" + player.hasPermissions(2));
+
+        ModNetworking.CHANNEL.sendTo(new OpPackage(player.hasPermissions(2)), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     @SubscribeEvent

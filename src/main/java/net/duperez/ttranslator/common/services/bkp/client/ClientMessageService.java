@@ -9,17 +9,17 @@ public class ClientMessageService {
 
 
     public static String buildMessage(TranslatedMessageEntity message) {
-        ClientTranslationUiConfigEntity clientConfig = ClientSideUiConfigsService.getInstance().getConfigs();
-        //build language prefix
-        String prefix = "";
-        if (clientConfig.isShowOriginalLanguage() && clientConfig.isShowTranslatedLanguage()) {
-            prefix = "[" + message.getOriginalLanguage().getIsoName() + "->" + message.getTranslatedLanguage().getIsoName() + "] ";
-        } else if (clientConfig.isShowOriginalLanguage()) {
-            prefix = "[" + message.getOriginalLanguage().getIsoName() + "] ";
-        } else if (clientConfig.isShowTranslatedLanguage()) {
-            prefix = "[" + message.getTranslatedLanguage().getIsoName() + "] ";
-        }
+        //ClientTranslationUiConfigEntity clientConfig = ClientSideUiConfigsService.getInstance().getConfigs();
+        ////build language prefix
+        //String prefix = "";
+        //if (clientConfig.isShowOriginalLanguage() && clientConfig.isShowTranslatedLanguage()) {
+        //    prefix = ;
+        //} else if (clientConfig.isShowOriginalLanguage()) {
+        //    prefix = "[" + message.getOriginalLanguage().getIsoName() + "] ";
+        //} else if (clientConfig.isShowTranslatedLanguage()) {
+        //    prefix = "[" + message.getTranslatedLanguage().getIsoName() + "] ";
+        //}
 
-        return prefix + message.getMessage();
+        return "<" + message.getSender() + ">" + " " + "[" + message.getOriginalLanguage().getIsoName() + "->" + message.getTranslatedLanguage().getIsoName() + "] " + message.getMessage();
     }
 }

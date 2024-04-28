@@ -35,8 +35,6 @@ public class ServerMessagePackageHandler {
 
                 List<TranslatedMessageEntity> translatedMessages = new ArrayList<>(translateMessageMultiTread(msg, toTranslateLanguages));
 
-                translatedMessages.forEach(tMessage -> System.out.println(tMessage.getMessage()));
-
                 ModNetworking.CHANNEL.send(PacketDistributor.ALL.noArg(), new MessagePackage(new Gson().toJson(translatedMessages)));
             }
         }
