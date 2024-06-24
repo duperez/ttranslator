@@ -32,8 +32,7 @@ import javax.sound.sampled.Clip;
 
 public class TranslationService {
 
-    public static String KEY = "AIzaSyDyyr8OzliwzKQNei3EIxedBJjgufFkSoI";
-    public static String TEXT_TO_SPEECH_KEY = "AIzaSyBoWoddDebHAO7tN5YrpLB8SJFVjHG-cmE";
+    public static String KEY = "<your_key_here";
     private static final String API_URL = "https://texttospeech.googleapis.com/v1/text:synthesize?key=" + KEY;
 
     private static final Logger LOGGER = LogUtils.getLogger();

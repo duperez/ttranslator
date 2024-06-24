@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataFile<T> {
-    private static final String PATH = "config\\ttranslator";
+    private static final String PATH = "config/ttranslator";
     private static final Gson gson = new Gson();
 
 
     public List<T> loadDataList(String fileName) {
         List<T> dataList = new ArrayList<>();
-        try (FileReader reader = new FileReader(PATH + "\\" + fileName)) {
+        try (FileReader reader = new FileReader(PATH + "/" + fileName)) {
             Type listType = new TypeToken<List<T>>(){}.getType();
             dataList = gson.fromJson(reader, listType);
 
@@ -33,7 +33,7 @@ public class DataFile<T> {
     public void saveData(String fileName, List<T> content) throws IOException {
         Files.createDirectories(Paths.get(PATH));
         String json = gson.toJson(content);
-        try (FileWriter writer = new FileWriter(PATH + "\\" + fileName)) {
+        try (FileWriter writer = new FileWriter(PATH + "/" + fileName)) {
             writer.write(json);
         } catch (IOException e) {
             e.printStackTrace();
